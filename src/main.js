@@ -23,7 +23,7 @@ const nbsp = (h) =>
 
 /* ---------- Catalogue ---------- */
 const GROUPS = [
-  ['Conversions et écoulements', ['conv', 'reynolds', 'terminal']],
+  ['Puissance, conversions, écoulements', ['puissance', 'conv', 'terminal', 'reynolds']],
   ['Air et ventilation', ['airneuf', 'cta', 'fan', 'gaine', 'psychro']],
   ['Chauffage et climatisation', ['deperd', 'frigo']],
   ['Hydraulique', ['hydro', 'vase']],

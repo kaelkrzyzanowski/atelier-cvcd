@@ -69,6 +69,21 @@ conv:{t:"Convertisseur rapide",ref:"Unités SI",ind:false,
  run:v=>({rows:[["Puissance",U(v.p*859.845,0,"kcal/h")],["",U(v.p*3412.14,0,"BTU/h")],["",U(v.p/3.51685,2,"TR")],["Débit",U(v.q/3600,3,"m³/s")],["",U(v.q/3.6,1,"L/s")],["Pression",U(v.pa/9.80665,1,"mmCE")],["",U(v.pa/100,2,"mbar")]],st:[],
  ex:[`${U(v.p,1,"kW")} × 859,845 = ${U(v.p*859.845,0,"kcal/h")}`,`${U(v.p,1,"kW")} × 3 412,14 = ${U(v.p*3412.14,0,"BTU/h")}`,`${U(v.p,1,"kW")} / 3,51685 = ${U(v.p/3.51685,2,"TR")}`,`${U(v.q,0,"m³/h")} / 3 600 = ${U(v.q/3600,3,"m³/s")} ; / 3,6 = ${U(v.q/3.6,1,"L/s")}`,`${U(v.pa,0,"Pa")} / 9,80665 = ${U(v.pa/9.80665,1,"mmCE")}`]})},
 
+puissance:{t:"Puissance, débit, ΔT (air ou eau)",ref:"P = qv·c·ΔT",
+ inputs:[{id:"fl",l:"Fluide",t:"s",v:"eau",o:[["eau","Eau (c = 1,163 kWh/m³·K)"],["air","Air (c = 0,34 Wh/m³·K)"]]},{id:"ca",l:"Grandeur à calculer",t:"s",v:"p",o:[["p","Puissance P"],["q","Débit qv"],["dt","Écart de température ΔT"]]},
+ {id:"p",l:"Puissance",u:"kW",v:10,w:v=>v.ca!=="p"},{id:"q",l:"Débit",u:"m³/h",v:1.72,w:v=>v.ca!=="q"},{id:"dt",l:"ΔT (départ − retour, ou soufflage − reprise)",u:"K",v:5,w:v=>v.ca!=="dt"}],
+ f:"P = qv × c × ΔT · qv = P / (c × ΔT) · ΔT = P / (qv × c) · eau : c = 1,163 kWh/(m³·K) · air : c = 0,34 Wh/(m³·K) (ρ 1,2 kg/m³ × cp 1,006 kJ/kg·K / 3 600)",
+ run:v=>{const eau=v.fl==="eau";const c=eau?1.163:0.34/1000;const cTxt=eau?"1,163":"0,00034";let P=v.p,q=v.q,dt=v.dt,ex;
+  if(v.ca==="p"){P=q*c*dt;ex=[`P = qv × c × ΔT = ${nf(q,2)} × ${cTxt} × ${nf(dt,1)} = ${U(P,2,"kW")}`];}
+  else if(v.ca==="q"){q=P/(c*dt);ex=[`qv = P / (c × ΔT) = ${nf(P,2)} / (${cTxt} × ${nf(dt,1)}) = ${U(q,eau?3:0,"m³/h")}`];}
+  else{dt=P/(q*c);ex=[`ΔT = P / (qv × c) = ${nf(P,2)} / (${nf(q,2)} × ${cTxt}) = ${U(dt,2,"K")}`];}
+  ex.unshift(eau?"Eau : c = ρ × cp = 1 000 kg/m³ × 4,186 kJ/kg·K / 3 600 = 1,163 kWh/(m³·K)":"Air : c = ρ × cp = 1,2 kg/m³ × 1,006 kJ/kg·K / 3 600 ≈ 0,34 Wh/(m³·K), soit 0,000 34 kWh/(m³·K)");
+  const rows=[["Puissance",U(P,2,"kW"),v.ca==="p"],["",U(P*1000,0,"W")],["Débit",U(q,eau?3:0,"m³/h"),v.ca==="q"],eau?["",U(q*1000,0,"L/h")]:["",U(q/3600,3,"m³/s")],["ΔT",U(dt,1,"K"),v.ca==="dt"]];
+  const st=[];if(!isFinite(P)||!isFinite(q)||!isFinite(dt)||q<=0||dt<=0||P<0)st.push(["bad","Débit et ΔT doivent être strictement positifs (division par zéro sinon)."]);
+  else if(eau)st.push(dt>20?["warn","ΔT eau > 20 K : inhabituel en CVC (chaud 5 à 20 K, eau glacée 5 à 6 K)."]:["ok","Eau glacée : ΔT 5 à 6 K courant · eau chaude : 5 à 20 K selon les émetteurs."]);
+  else st.push(dt>12?["warn","ΔT air > 12 K : soufflage très froid ou très chaud, risque d'inconfort (vérifier la diffusion)."]:["ok","ΔT air courant (8 à 12 K en froid, jusqu'à ~15 K en chaud)."]);
+  return {rows,st,ex};}},
+
 reynolds:{t:"Reynolds et perte de charge linéaire",ref:"Darcy-Weisbach · Colebrook",
  inputs:[{id:"fl",l:"Fluide",t:"s",v:"air",o:[["air","Air à 20 °C"],["ef","Eau à 10 °C"],["ec","Eau à 45 °C"]]},{id:"v",l:"Vitesse",u:"m/s",v:5},{id:"d",l:"Diamètre intérieur",u:"mm",v:400},{id:"e",l:"Rugosité ε",h:"tôle galva 0,15 · acier 0,045",u:"mm",v:0.15}],
  f:"Re = v·D/ν · 1/√λ = −2 log(ε/3,7D + 2,51/(Re√λ)) · J = λ/D · ρv²/2",

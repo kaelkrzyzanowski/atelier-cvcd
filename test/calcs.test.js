@@ -109,6 +109,14 @@ describe('calculateurs (valeurs par défaut)', () => {
   it('tertiaire', () => {
     near(val(run('tertiaire'), 'Objectif 2030'), 720000);
   });
+  it('puissance : eau, air et les trois inconnues', () => {
+    near(val(run('puissance', { fl: 'eau', ca: 'p', q: 1, dt: 5 }), 'Puissance'), 5.815);
+    near(val(run('puissance', { fl: 'air', ca: 'p', q: 1000, dt: 10 }), 'Puissance'), 3.4);
+    near(val(run('puissance', { fl: 'eau', ca: 'q', p: 360, dt: 5 }), 'Débit'), 61.91); // même résultat que l'outil hydro
+    near(val(run('puissance', { fl: 'air', ca: 'q', p: 2.5, dt: 10 }), 'Débit'), 735); // même résultat que l'outil terminal
+    near(val(run('puissance', { fl: 'air', ca: 'dt', p: 3.4, q: 1000 }), 'ΔT'), 10);
+    expect(run('puissance', { ca: 'q', dt: 0 }).st[0][0]).toBe('bad');
+  });
   it('tous les calculateurs tournent sans erreur', () => {
     for (const id of Object.keys(CALCS)) expect(() => run(id), id).not.toThrow();
   });

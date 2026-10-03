@@ -1,7 +1,7 @@
 # Atelier CVCD — calculateurs de chantier
 
 Application Android (et page web) qui reprend **uniquement les outils de calcul** de la formation « Atelier CVCD »,
-pour faire des pré-sélections rapides sur un chantier : air neuf, CTA, ventilateur, gaine, air humide, déperditions,
+pour faire des pré-sélections rapides sur un chantier : puissance ↔ débit ↔ ΔT (air ou eau), air neuf, CTA, ventilateur, gaine, air humide, déperditions,
 bilan frigorifique, réseau hydraulique, vase d'expansion, charge de fluide (NF EN 378), désenfumage, BACS, décret tertiaire…
 
 - Fonctionne **entièrement hors ligne**, sans aucune permission Android.
@@ -15,7 +15,7 @@ Les résultats sont des **ordres de grandeur indicatifs** : ils ne remplacent pa
 
 | Fichier | Rôle |
 |---|---|
-| `src/calcs.js` | Physique (air humide, Colebrook…), tables et définition des 18 calculateurs, repris tels quels de la version web |
+| `src/calcs.js` | Physique (air humide, Colebrook…), tables et définition des 19 calculateurs, repris tels quels de la version web |
 | `src/inputs.js` | Lecture des nombres « à la française » (virgule, espaces, signe −) et valeurs par défaut |
 | `src/main.js` | Interface : liste des outils (`#/`) et écran d'un outil (`#/cta`, `#/gaine`…) |
 | `src/native.js` | Spécifique à Android : bouton retour, couleur de la barre d'état, feuille de partage |
