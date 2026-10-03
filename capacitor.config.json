@@ -1,0 +1,8 @@
+{
+  "appId": "fr.ateliercvcd.app",
+  "appName": "Atelier CVCD",
+  "webDir": "dist",
+  "android": {
+    "backgroundColor": "#0c6873"
+  }
+}

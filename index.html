@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c6873">
+<meta name="description" content="Calculateurs CVCD de pré-dimensionnement rapide : air, thermique, hydraulique, froid, désenfumage.">
+<title>Atelier CVCD</title>
+<link rel="icon" href="/favicon.png">
+</head>
+<body>
+<header class="topbar">
+  <button id="backBtn" class="icon-btn" type="button" aria-label="Retour à la liste des outils" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+  </button>
+  <h1 id="title" class="title">Atelier CVCD</h1>
+  <button id="shareBtn" class="icon-btn" type="button" aria-label="Partager les résultats" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="M8.2 10.9l7.6-4.6M8.2 13.1l7.6 4.6"/></svg>
+  </button>
+  <button id="themeBtn" class="icon-btn" type="button" aria-label="Basculer entre thème clair et sombre">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16z" class="fill"/></svg>
+  </button>
+</header>
+<main id="main" tabindex="-1"></main>
+<div id="summary" class="summary" hidden></div>
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

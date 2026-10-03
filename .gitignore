@@ -1,0 +1,8 @@
+node_modules
+dist
+*.local
+# Clés de signature Android : jamais dans le dépôt
+*.p12
+*.jks
+*.keystore
+MOT-DE-PASSE*
